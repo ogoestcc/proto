@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package users;
+
+message Empty{}
+
+service Users {
+    rpc test_user(Empty) returns (User) {}
+}
+
+message User {
+    string name = 1;
+}
