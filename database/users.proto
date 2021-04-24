@@ -3,7 +3,7 @@ syntax = "proto2";
 package users;
 
 message WhereClause {
-    optional int64 id = 1;
+    optional int32 id = 1;
     optional string email = 2;
     optional bool active = 3;
 }
