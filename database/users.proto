@@ -1,13 +1,37 @@
-syntax = "proto3";
+syntax = "proto2";
 
 package users;
 
-message Empty{}
+message WhereClause {
+    optional int64 id = 1;
+    optional string email = 2;
+    optional bool active = 3;
+}
 
-service Users {
-    rpc test_user(Empty) returns (User) {}
+message GetUsersRequest {
+    optional WhereClause where = 1;
+}
+
+message GetUsersResponse {
+    message Metadata {
+        required uint64 total = 1;
+        optional WhereClause where = 2;
+    }
+
+    required Metadata metadata = 1;
+    repeated User users = 2;
 }
 
 message User {
-    string name = 1;
+    required int32 id = 1;
+    required string email = 2;
+    optional string password = 3;
+    required bool active = 4;
+    required string created_at = 5;
+    required string updated_at = 6;
+    optional string deleted_at = 7;
+}
+
+service Users {
+    rpc get_users(GetUsersRequest) returns (GetUsersResponse) {}
 }
