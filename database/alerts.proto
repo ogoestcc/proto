@@ -1,0 +1,36 @@
+syntax = "proto2";
+
+package alerts;
+
+message WhereClause {
+    optional string id = 1;
+    optional string content = 2;
+}
+
+message GetAlertsRequest {
+    optional WhereClause where = 1;
+}
+
+message GetAlertsResponse {
+    message Metadata {
+        required uint64 total = 1;
+        optional WhereClause where = 2;
+    }
+
+    required Metadata metadata = 1;
+    repeated Alert alerts = 2;
+}
+
+message Alert {
+    required string id = 1;
+    optional float cvss_score = 2;
+    required string provider = 3;
+    required string product = 4;
+    required string published_at = 5;
+    required string updated_at = 6;
+    required string description = 7;
+}
+
+service Alerts {
+    rpc get_alerts(GetAlertsRequest) returns (GetAlertsResponse) {}
+}
