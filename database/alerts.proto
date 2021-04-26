@@ -1,34 +1,21 @@
 syntax = "proto2";
 
-package alerts;
+package database;
 
-message WhereClause {
-    optional string id = 1;
-    optional string content = 2;
-}
+import "types.proto";
 
 message GetAlertsRequest {
-    optional WhereClause where = 1;
+    optional database.AlertWhereClause where = 1;
 }
 
 message GetAlertsResponse {
     message Metadata {
         required uint64 total = 1;
-        optional WhereClause where = 2;
+        optional database.AlertWhereClause where = 2;
     }
 
     required Metadata metadata = 1;
-    repeated Alert alerts = 2;
-}
-
-message Alert {
-    required string id = 1;
-    optional float cvss_score = 2;
-    required string provider = 3;
-    required string product = 4;
-    required string published_at = 5;
-    required string updated_at = 6;
-    required string description = 7;
+    repeated database.Alert alerts = 2;
 }
 
 service Alerts {

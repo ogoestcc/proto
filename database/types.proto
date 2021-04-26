@@ -1,0 +1,51 @@
+syntax = "proto2";
+
+package database;
+
+message User {
+    required int32 id = 1;
+    required string email = 2;
+    optional string password = 3;
+    required bool active = 4;
+    required string created_at = 5;
+    required string updated_at = 6;
+    optional string deleted_at = 7;
+}
+
+message UserWhereClause {
+    optional int32 id = 1;
+    optional string email = 2;
+    optional bool active = 3;
+}
+
+message Alert {
+    required string id = 1;
+    optional float cvss_score = 2;
+    required string provider = 3;
+    required string product = 4;
+    required string published_at = 5;
+    required string updated_at = 6;
+    required string description = 7;
+}
+
+message AlertWhereClause {
+    optional string id = 1;
+    optional string content = 2;
+}
+
+message Rating {
+    required int32 user_id = 1;
+    required string alert_id = 2;
+    required bool like = 3;
+    required bool dislike = 4;
+    required bool critical = 5;
+    required string created_at = 6;
+}
+
+message RatingWhereClause {
+    optional int32 user_id = 1;
+    optional string alert_id = 2;
+    optional bool like = 3;
+    optional bool dislike = 4;
+    optional bool critical = 5;
+}

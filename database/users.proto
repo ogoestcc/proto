@@ -1,37 +1,46 @@
 syntax = "proto2";
 
-package users;
+package database;
 
-message WhereClause {
-    optional int32 id = 1;
-    optional string email = 2;
-    optional bool active = 3;
-}
+import "types.proto";
 
 message GetUsersRequest {
-    optional WhereClause where = 1;
+    optional database.UserWhereClause where = 1;
 }
 
 message GetUsersResponse {
     message Metadata {
         required uint64 total = 1;
-        optional WhereClause where = 2;
+        optional database.UserWhereClause where = 2;
     }
 
     required Metadata metadata = 1;
-    repeated User users = 2;
+    repeated database.User users = 2;
 }
 
-message User {
-    required int32 id = 1;
-    required string email = 2;
-    optional string password = 3;
-    required bool active = 4;
-    required string created_at = 5;
-    required string updated_at = 6;
-    optional string deleted_at = 7;
+message GetUsersAndRatingsRequest {
+    optional database.UserWhereClause user_where = 1;
+    optional database.RatingWhereClause rating_where = 2;
+}
+
+message UsersRatings {
+    required database.User user = 2;
+    repeated database.Rating ratings = 3;
+}
+
+message GetUsersAndRatingsResponse {
+
+    message Metadata {
+        required uint64 total = 1;
+        optional database.UserWhereClause user_where = 2;
+        optional database.RatingWhereClause rating_where = 4;
+    }
+
+    required Metadata metadata = 1;
+    repeated UsersRatings users = 2;
 }
 
 service Users {
     rpc get_users(GetUsersRequest) returns (GetUsersResponse) {}
+    rpc get_users_and_preferences(GetUsersAndRatingsRequest) returns (GetUsersAndRatingsResponse) {}
 }
