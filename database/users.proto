@@ -42,5 +42,5 @@ message GetUsersAndRatingsResponse {
 
 service Users {
     rpc get_users(GetUsersRequest) returns (GetUsersResponse) {}
-    rpc get_users_and_preferences(GetUsersAndRatingsRequest) returns (GetUsersAndRatingsResponse) {}
+    rpc get_users_and_ratings(GetUsersAndRatingsRequest) returns (GetUsersAndRatingsResponse) {}
 }
