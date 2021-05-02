@@ -18,6 +18,30 @@ message GetAlertsResponse {
     repeated database.Alert alerts = 2;
 }
 
+message GetAlertsAndRatingsRequest {
+    optional database.AlertWhereClause alert_where = 1;
+    optional database.RatingWhereClause rating_where = 2;
+}
+
+message AlertsRatings {
+    required database.Alert alert = 1;
+    repeated database.Rating ratings = 2;
+}
+
+message GetAlertsAndRatingsResponse {
+    message Metadata {
+        required uint64 total = 1;
+        optional database.AlertWhereClause alert_where = 2;
+        optional database.RatingWhereClause rating_where = 3;
+    }
+
+    required Metadata metadata = 1;
+    repeated AlertsRatings alerts = 2;
+}
+
+
+
 service Alerts {
     rpc get_alerts(GetAlertsRequest) returns (GetAlertsResponse) {}
+    rpc get_alerts_and_ratings(GetAlertsAndRatingsRequest) returns (GetAlertsAndRatingsResponse) {}
 }
