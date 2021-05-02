@@ -40,7 +40,25 @@ message GetUsersAndRatingsResponse {
     repeated UsersRatings users = 2;
 }
 
+message UsersContents {
+    required database.User user = 2;
+    repeated database.Content preferences = 3;
+}
+
+message GetUsersAndContentsResponse {
+
+    message Metadata {
+        required uint64 total = 1;
+        optional database.UserWhereClause user_where = 2;
+    }
+
+    required Metadata metadata = 1;
+    repeated UsersContents users = 2;
+}
+
+
 service Users {
     rpc get_users(GetUsersRequest) returns (GetUsersResponse) {}
     rpc get_users_and_ratings(GetUsersAndRatingsRequest) returns (GetUsersAndRatingsResponse) {}
+    rpc get_users_and_contents(GetUsersRequest) returns (GetUsersAndContentsResponse) {}
 }

@@ -49,3 +49,10 @@ message RatingWhereClause {
     optional bool dislike = 4;
     optional bool critical = 5;
 }
+
+message Content {
+    required string id = 1;
+    optional string description = 2;
+    required bool is_product = 3;
+    required bool active = 4;
+}
