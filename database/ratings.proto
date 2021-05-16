@@ -1,0 +1,25 @@
+syntax = "proto2";
+
+package proto.database;
+
+import "types.proto";
+
+message GetRatings {
+  message Metadata {
+    required uint64 total = 1;
+    optional proto.types.RatingWhereClause where = 2;
+  }
+
+  message Request {
+    optional proto.types.RatingWhereClause where = 1;
+  }
+
+  message Response {
+    required Metadata metadata = 1;
+    repeated proto.types.Rating ratings = 2;
+  }
+}
+
+service Ratings {
+  rpc get_ratings(GetRatings.Request) returns (GetRatings.Response) {}
+}

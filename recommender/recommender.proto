@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+package proto.recommender;
+
+import "types.proto";
+
+message ContentBased {
+  message Request {
+    required uint32 user_id = 1;
+    optional uint32 alerts_number = 2;
+  }
+
+  message Response {
+    repeated proto.types.Alert alerts = 1;
+  }
+}
+
+service recommender {
+  rpc content_based(ContentBased.Request) returns (ContentBased.Response) {}
+}

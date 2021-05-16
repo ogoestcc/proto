@@ -1,64 +1,69 @@
 syntax = "proto2";
 
-package database;
+package proto.database;
 
 import "types.proto";
 
-message GetUsersRequest {
-    optional database.UserWhereClause where = 1;
-}
+message GetUsers {
+  message Metadata {
+    required uint64 total = 1;
+    optional proto.types.UserWhereClause where = 2;
+  }
 
-message GetUsersResponse {
-    message Metadata {
-        required uint64 total = 1;
-        optional database.UserWhereClause where = 2;
-    }
+  message Request {
+    optional proto.types.UserWhereClause where = 1;
+  }
 
+  message Response {
     required Metadata metadata = 1;
-    repeated database.User users = 2;
+    repeated proto.types.User users = 2;
+  }
 }
 
-message GetUsersAndRatingsRequest {
-    optional database.UserWhereClause user_where = 1;
-    optional database.RatingWhereClause rating_where = 2;
-}
+message GetUsersAndRatings {
+  message Metadata {
+    required uint64 total = 1;
+    optional proto.types.UserWhereClause user_where = 2;
+    optional proto.types.RatingWhereClause rating_where = 4;
+  }
 
-message UsersRatings {
-    required database.User user = 2;
-    repeated database.Rating ratings = 3;
-}
+  message Request {
+    optional proto.types.UserWhereClause user_where = 1;
+    optional proto.types.RatingWhereClause rating_where = 2;
+  }
 
-message GetUsersAndRatingsResponse {
+  message UsersRatings {
+    required proto.types.User user = 2;
+    repeated proto.types.Rating ratings = 3;
+  }
 
-    message Metadata {
-        required uint64 total = 1;
-        optional database.UserWhereClause user_where = 2;
-        optional database.RatingWhereClause rating_where = 4;
-    }
-
+  message Response {
     required Metadata metadata = 1;
     repeated UsersRatings users = 2;
+  }
 }
 
-message UsersContents {
-    required database.User user = 2;
-    repeated database.Content preferences = 3;
-}
+message GetUsersAndContents {
+  message Metadata {
+    required uint64 total = 1;
+    optional proto.types.UserWhereClause user_where = 2;
+  }
 
-message GetUsersAndContentsResponse {
+  message UsersContents {
+    required proto.types.User user = 2;
+    repeated proto.types.Content preferences = 3;
+  }
 
-    message Metadata {
-        required uint64 total = 1;
-        optional database.UserWhereClause user_where = 2;
-    }
-
+  message Response {
     required Metadata metadata = 1;
     repeated UsersContents users = 2;
+  }
 }
 
-
 service Users {
-    rpc get_users(GetUsersRequest) returns (GetUsersResponse) {}
-    rpc get_users_and_ratings(GetUsersAndRatingsRequest) returns (GetUsersAndRatingsResponse) {}
-    rpc get_users_and_contents(GetUsersRequest) returns (GetUsersAndContentsResponse) {}
+  rpc get_users(GetUsers.Request) returns (GetUsers.Response) {}
+  rpc get_users_and_ratings(GetUsersAndRatings.Request)
+      returns (GetUsersAndRatings.Response) {}
+  rpc get_users_and_contents(GetUsers.Request)
+      returns (GetUsersAndContents.Response) {}
 }

@@ -1,47 +1,50 @@
 syntax = "proto2";
 
-package database;
+package proto.database;
 
 import "types.proto";
 
-message GetAlertsRequest {
-    optional database.AlertWhereClause where = 1;
-}
+message GetAlerts {
+  message Metadata {
+    required uint64 total = 1;
+    optional proto.types.AlertWhereClause where = 2;
+  }
 
-message GetAlertsResponse {
-    message Metadata {
-        required uint64 total = 1;
-        optional database.AlertWhereClause where = 2;
-    }
+  message Request {
+    optional proto.types.AlertWhereClause where = 1;
+  }
 
+  message Response {
     required Metadata metadata = 1;
-    repeated database.Alert alerts = 2;
+    repeated proto.types.Alert alerts = 2;
+  }
 }
 
-message GetAlertsAndRatingsRequest {
-    optional database.AlertWhereClause alert_where = 1;
-    optional database.RatingWhereClause rating_where = 2;
-}
+message GetAlertsAndRatings {
+  message Metadata {
+    required uint64 total = 1;
+    optional proto.types.AlertWhereClause alert_where = 2;
+    optional proto.types.RatingWhereClause rating_where = 3;
+  }
 
-message AlertsRatings {
-    required database.Alert alert = 1;
-    repeated database.Rating ratings = 2;
-}
+  message Request {
+    optional proto.types.AlertWhereClause alert_where = 1;
+    optional proto.types.RatingWhereClause rating_where = 2;
+  }
 
-message GetAlertsAndRatingsResponse {
-    message Metadata {
-        required uint64 total = 1;
-        optional database.AlertWhereClause alert_where = 2;
-        optional database.RatingWhereClause rating_where = 3;
-    }
+  message AlertsRatings {
+    required proto.types.Alert alert = 1;
+    repeated proto.types.Rating ratings = 2;
+  }
 
+  message Response {
     required Metadata metadata = 1;
     repeated AlertsRatings alerts = 2;
+  }
 }
 
-
-
 service Alerts {
-    rpc get_alerts(GetAlertsRequest) returns (GetAlertsResponse) {}
-    rpc get_alerts_and_ratings(GetAlertsAndRatingsRequest) returns (GetAlertsAndRatingsResponse) {}
+  rpc get_alerts(GetAlerts.Request) returns (GetAlerts.Response) {}
+  rpc get_alerts_and_ratings(GetAlertsAndRatings.Request)
+      returns (GetAlertsAndRatings.Response) {}
 }
