@@ -15,6 +15,32 @@ message ContentBased {
   }
 }
 
+message CollaborativeFiltering {
+  message Request {
+    required uint32 user_id = 1;
+    optional uint32 alerts_number = 2;
+  }
+
+  message Response {
+    repeated proto.types.Alert alerts = 1;
+  }
+}
+
+message TopN {
+  message Request {
+    optional uint32 alerts_number = 1;
+    optional string content = 2;
+  }
+
+  message Response {
+    repeated proto.types.Alert alerts = 1;
+  }
+}
+
 service recommender {
   rpc content_based(ContentBased.Request) returns (ContentBased.Response) {}
+  rpc collaborative_filtering(CollaborativeFiltering.Request)
+      returns (CollaborativeFiltering.Response) {}
+  rpc top_n(TopN.Request)
+      returns (TopN.Response) {}
 }
