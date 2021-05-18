@@ -1,46 +1,119 @@
+/**
+ * Proto file tha defines the recommder gRPC server interface
+ *
+ * @author: Otávio Goes <otavio@ogoes.dev>
+ * @updated_at: 18/05/2021
+ */
+
 syntax = "proto2";
 
 package proto.recommender;
 
 import "types.proto";
 
+/**
+ * Content Based recommendation metadata
+ *
+ * Define a namespace that contains the Request and Response types definitions
+ *
+ */
 message ContentBased {
+  /**
+   * Request type
+   *
+   * user_id: user identifier, required by recommendation
+   * [alerts_number]: specify how much alerts will returned
+   */
   message Request {
     required uint32 user_id = 1;
     optional uint32 alerts_number = 2;
   }
 
+  /**
+   * Response type
+   *
+   * alerts: filtered alerts
+   */
   message Response {
     repeated proto.types.Alert alerts = 1;
   }
 }
 
+/**
+ * Collaborative Filtering metadata
+ *
+ * Define a namespace that contains the Request and Response types definitions
+ *
+ */
 message CollaborativeFiltering {
+  /**
+   * Request type
+   *
+   * user_id: user identifier, required by recommendation
+   * [alerts_number]: specify how much alerts will returned
+   */
   message Request {
     required uint32 user_id = 1;
     optional uint32 alerts_number = 2;
   }
 
+  /**
+   * Response type
+   *
+   * alerts: filtered alerts
+   */
   message Response {
     repeated proto.types.Alert alerts = 1;
   }
 }
 
+/**
+ * Top N recommendation metadata
+ *
+ * Define a namespace that contains the Request and Response types definitions
+ *
+ */
 message TopN {
+  /**
+   * Request type
+   *
+   * [alerts_number]: specify how much alerts will returned
+   * [content]: alert filter, compared to provider or product
+   */
   message Request {
     optional uint32 alerts_number = 1;
     optional string content = 2;
   }
 
+  /**
+   * Response type
+   *
+   * alerts: filtered alerts
+   */
   message Response {
     repeated proto.types.Alert alerts = 1;
   }
 }
 
+/**
+ * gRPC Service Definition
+ *
+ */
 service recommender {
+  /**
+   * Content Based Recommendation Procedure
+   *
+   */
   rpc content_based(ContentBased.Request) returns (ContentBased.Response) {}
+  /**
+   * Collaborative Filtering Procedure
+   *
+   */
   rpc collaborative_filtering(CollaborativeFiltering.Request)
       returns (CollaborativeFiltering.Response) {}
-  rpc top_n(TopN.Request)
-      returns (TopN.Response) {}
+  /**
+   * Top N Recommendation Procedure
+   *
+   */
+  rpc top_n(TopN.Request) returns (TopN.Response) {}
 }
