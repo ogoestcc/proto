@@ -60,10 +60,40 @@ message GetUsersAndContents {
   }
 }
 
+message Operations {
+  message AllowedChanges {
+    optional string email = 1;
+    optional string password = 2;
+  }
+
+  message Create {
+    required AllowedChanges user = 1;
+  }
+
+  message Retrieve {
+    optional proto.types.UserWhereClause where = 1;
+  }
+
+  message Update {
+    required AllowedChanges user = 1;
+    required proto.types.UserWhereClause where = 2;
+  }
+
+  message Delete {
+    required proto.types.UserWhereClause where = 1;
+  }
+}
+
 service Users {
   rpc get_users(GetUsers.Request) returns (GetUsers.Response) {}
   rpc get_users_and_ratings(GetUsersAndRatings.Request)
       returns (GetUsersAndRatings.Response) {}
   rpc get_users_and_contents(GetUsers.Request)
       returns (GetUsersAndContents.Response) {}
+
+  //* CRUD
+  rpc create(Operations.Create) returns (proto.types.User) {}
+  rpc retrieve(Operations.Retrieve) returns (proto.types.User) {}
+  rpc update(Operations.Update) returns (proto.types.User) {}
+  rpc delete (Operations.Delete) returns (proto.types.User) {}
 }
