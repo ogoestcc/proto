@@ -26,18 +26,14 @@ message Alert {
     required string published_at = 5;
     required string updated_at = 6;
     required string description = 7;
+    optional bool starred = 8;
 }
 
 message AlertWhereClause {
 
-    enum ViewType {
-        VIEW = 0;
-        FAVORITED = 1;
-    }
-
     message View {
         required int64 user_id = 1;
-        required ViewType view = 2;
+        optional bool favorited = 2;
     }
 
     optional string id = 1;
