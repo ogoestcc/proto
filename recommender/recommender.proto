@@ -35,7 +35,7 @@ message ContentBased {
    * alerts: filtered alerts
    */
   message Response {
-    repeated proto.types.Alert alerts = 1;
+    repeated string alerts = 1;
   }
 }
 
@@ -63,7 +63,7 @@ message CollaborativeFiltering {
    * alerts: filtered alerts
    */
   message Response {
-    repeated proto.types.Alert alerts = 1;
+    repeated string alerts = 1;
   }
 }
 
@@ -78,21 +78,27 @@ message TopN {
    * Request type
    *
    * [alerts_number]: specify how much alerts will returned
-   * [content]: alert filter, compared to provider or product
    */
   message Request {
     optional uint32 alerts_number = 1;
-    optional string content = 2;
   }
 
   /**
    * Response type
    *
-   * alerts: filtered alerts
+   * alerts: filtered alerts ids
    */
   message Response {
-    repeated proto.types.Alert alerts = 1;
+    repeated string alerts = 1;
   }
+}
+
+message LoadData {
+  message Request {
+    required uint32 user_id = 1;
+  }
+
+  message Response{}
 }
 
 /**
@@ -116,4 +122,6 @@ service recommender {
    *
    */
   rpc top_n(TopN.Request) returns (TopN.Response) {}
+
+  rpc load_user_data(LoadData.Request) returns (LoadData.Response) {}
 }
