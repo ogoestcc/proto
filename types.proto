@@ -36,9 +36,14 @@ message AlertWhereClause {
         optional bool favorited = 2;
     }
 
+    message WhereIn {
+        repeated string id = 1;
+    }
+
     optional string id = 1;
     optional string content = 2;
     optional View viewer = 3;
+    optional WhereIn where_in = 4;
 }
 
 message Rating {
